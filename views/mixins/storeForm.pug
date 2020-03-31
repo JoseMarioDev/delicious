@@ -1,9 +1,9 @@
 mixin storeForm(store = {})
   form(action='/add' method='POST' class='card')
     label(for='name') Name
-    input(type='text' name='name' placeholder='Enter a name')
+    input(type='text' name='name' placeholder='What\'s it called?')
     label(for='name') Description
-    textarea(name='description' placeholder='What kind of store is it?')
+    textarea(name='description' placeholder='Tell us about it')
     -const choices = ['wifi','open late', 'family friendly', 'vegetarian', 'licensed']
     ul.tags
       each choice in choices
