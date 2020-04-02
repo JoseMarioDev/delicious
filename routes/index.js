@@ -12,11 +12,24 @@ router.get('/stores', catchErrors(storeController.getStores));
 router.get('/add', storeController.addStore);
 
 // route for when you submit new store
-router.post('/add', catchErrors(storeController.createStore));
+router.post(
+  '/add',
+  storeController.upload,
+  catchErrors(storeController.resize),
+  catchErrors(storeController.createStore)
+);
 // editing current store
-router.post('/add/:id', catchErrors(storeController.updateStore));
+router.post(
+  '/add/:id',
+  storeController.upload,
+  catchErrors(storeController.resize),
+  catchErrors(storeController.updateStore)
+);
 
 // route for edit store
 router.get('/stores/:id/edit', catchErrors(storeController.editStore));
+
+// get individual store by slug
+router.get('/store/:slug', catchErrors(storeController.getStoreBySlug));
 
 module.exports = router;

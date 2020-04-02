@@ -2,10 +2,35 @@
 const mongoose = require('mongoose');
 
 const Store = mongoose.model('Store');
+const multer = require('multer');
+const jimp = require('jimp');
+const uuid = require('uuid');
 
-exports.homePage = (req, res) => {
-  console.log(req.name);
-  res.render('index');
+const multerOptions = {
+  storage: multer.memoryStorage(),
+  fileFilter(req, file, next) {
+    const isPhoto = file.mimetype.startsWith('image/');
+    if (isPhoto) {
+      next(null, true);
+    } else {
+      next({ message: 'that is not a supported filetype' }, false);
+    }
+  },
+};
+
+exports.upload = multer(multerOptions).single('photo');
+exports.resize = async (req, res, next) => {
+  // check is file to resize or not
+  if (!req.file) {
+    next(); // skip to next middleware
+  }
+  const extension = req.file.mimetype.split('/')[1];
+  req.body.photo = `${uuid.v4()}.${extension}`;
+  const photo = await jimp.read(req.file.buffer);
+  await photo.resize(800, jimp.AUTO);
+  await photo.write(`./public/uploads/${req.body.photo}`);
+  // once we have written photo to filesystem, keep going
+  next();
 };
 
 // returns view of addstore page
@@ -47,4 +72,11 @@ exports.updateStore = async (req, res) => {
   req.flash('success', `Successfully updated ${store.name}.  <a href="/stores/${store.slug}">View Store -></a>`);
   // redirect and confirm success
   res.redirect(`/stores/${store._id}/edit`);
+};
+
+//  get store by slug
+exports.getStoreBySlug = async (req, res, next) => {
+  const store = await Store.findOne({ slug: req.params.slug });
+  if (!store) return next();
+  res.render('store', { store, title: store.name });
 };
