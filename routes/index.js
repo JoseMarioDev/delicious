@@ -32,4 +32,10 @@ router.get('/stores/:id/edit', catchErrors(storeController.editStore));
 // get individual store by slug
 router.get('/store/:slug', catchErrors(storeController.getStoreBySlug));
 
+// get page of all tags
+router.get('/tags', catchErrors(storeController.getStoresByTag));
+
+// get individual tag
+router.get('/tags/:tag', catchErrors(storeController.getStoresByTag));
+
 module.exports = router;
