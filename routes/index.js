@@ -73,4 +73,7 @@ router.get('/account/reset/:token', catchErrors(authController.reset));
 // update PW
 router.post('/account/reset/:token', authController.confirmedPasswords, catchErrors(authController.update));
 
+//  APIs
+router.get('/api/search', catchErrors(storeController.searchStores));
+
 module.exports = router;
