@@ -73,7 +73,13 @@ router.get('/account/reset/:token', catchErrors(authController.reset));
 // update PW
 router.post('/account/reset/:token', authController.confirmedPasswords, catchErrors(authController.update));
 
+// get map page
+router.get('/map', storeController.mapPage);
+
 //  APIs
 router.get('/api/search', catchErrors(storeController.searchStores));
+
+// search stores near me using map
+router.get('/api/stores/near', catchErrors(storeController.mapStores));
 
 module.exports = router;
