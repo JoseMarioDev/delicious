@@ -82,4 +82,10 @@ router.get('/api/search', catchErrors(storeController.searchStores));
 // search stores near me using map
 router.get('/api/stores/near', catchErrors(storeController.mapStores));
 
+// post when user likes a heart
+router.post('/api/stores/:id/heart', catchErrors(storeController.heartStore));
+
+// view all hearts page
+router.get('/hearts', authController.isLoggedIn, catchErrors(storeController.getHearts));
+
 module.exports = router;
